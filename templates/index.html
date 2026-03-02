@@ -9,10 +9,36 @@
 <h2>AI Background Remover</h2>
 
 <form action="/remove-bg" method="POST" enctype="multipart/form-data">
-    <input type="file" name="image" required>
+    
+    <input type="file" name="image" id="imageInput" accept="image/*" required>
+    
     <br><br>
+    
+    <!-- Preview Image -->
+    <img id="preview" style="max-width:300px; display:none; border-radius:10px; box-shadow:0 0 10px rgba(0,0,0,0.2);">
+    
+    <br><br>
+    
     <button type="submit">Remove Background</button>
 </form>
+
+<script>
+document.getElementById("imageInput").addEventListener("change", function(event) {
+    const file = event.target.files[0];
+    
+    if (file) {
+        const reader = new FileReader();
+        
+        reader.onload = function(e) {
+            const preview = document.getElementById("preview");
+            preview.src = e.target.result;
+            preview.style.display = "block";
+        }
+        
+        reader.readAsDataURL(file);
+    }
+});
+</script>
 
 </body>
 </html>
