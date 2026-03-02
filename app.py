@@ -36,4 +36,4 @@ def remove_bg():
         return "Error removing background", 400
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run()
