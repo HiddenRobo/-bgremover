@@ -1,14 +1,11 @@
 from flask import Flask, request, send_file, render_template
 import requests
 import os
-from dotenv import load_dotenv
 import io
-
-load_dotenv()
 
 app = Flask(__name__)
 
-API_KEY = os.getenv("REMOVE_BG_API")
+API_KEY = os.environ.get("REMOVE_BG_API")
 
 @app.route("/")
 def home():
@@ -16,6 +13,9 @@ def home():
 
 @app.route("/remove-bg", methods=["POST"])
 def remove_bg():
+    if "image" not in request.files:
+        return "No file uploaded", 400
+
     file = request.files["image"]
 
     response = requests.post(
@@ -33,7 +33,8 @@ def remove_bg():
             download_name="no-bg.png"
         )
     else:
-        return "Error removing background", 400
+        return "API Error: " + response.text, 400
+
 
 if __name__ == "__main__":
     app.run()
